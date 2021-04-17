@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MovieFilms</string>
+    <string name="search">Search...</string>
+    <string name="search_movies">Search Movies</string>
+    <string name="saved_movies">Saved Movies</string>
+    <string name="all_movies">All Movies</string>
 </resources>
