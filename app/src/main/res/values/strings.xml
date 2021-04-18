@@ -4,4 +4,6 @@
     <string name="search_movies">Search Movies</string>
     <string name="saved_movies">Saved Movies</string>
     <string name="all_movies">All Movies</string>
+    <string name="poster_of_film">Poster of Film</string>
+    <string name="retry">Retry</string>
 </resources>

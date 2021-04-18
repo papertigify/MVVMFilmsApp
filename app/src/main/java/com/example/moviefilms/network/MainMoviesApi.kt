@@ -1,6 +1,6 @@
 package com.example.moviefilms.network
 
-import com.example.moviefilms.Constants.Companion.API_KEY
+import com.example.moviefilms.ApiKey.Companion.API_KEY
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
