@@ -36,6 +36,7 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e(TAG, "Backstack_exp first commit")
         Log.e(TAG, "AllMoviesFragment 1")
         progressBar = view.findViewById(R.id.loadingProgressBar)
 
