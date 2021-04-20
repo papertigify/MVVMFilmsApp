@@ -38,7 +38,6 @@ class MyLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<MyLoa
             retryButton.isVisible = loadState !is LoadState.Loading
             textError.isVisible = loadState !is LoadState.Loading
             progressBar.isVisible = loadState is LoadState.Loading
-
         }
     }
 }

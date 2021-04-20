@@ -7,7 +7,13 @@ import retrofit2.http.Query
 
 interface MainMoviesApi {
 
-    @GET("./movie?api_key=$API_KEY")
+    @GET("./discover/movie?api_key=$API_KEY")
     @Headers("Content-Type: application/json")
     suspend fun getFilmsList(@Query("page") page: Int): MoviesListResponse
+
+
+    @GET("./search/movie?api_key=$API_KEY")
+    @Headers("Content-Type: application/json")
+    suspend fun searchMovies(@Query("query") query: String, @Query("page") page: Int): MoviesListResponse
+
 }

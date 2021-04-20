@@ -35,6 +35,7 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         Log.e(TAG, "AllMoviesFragment 1")
         progressBar = view.findViewById(R.id.loadingProgressBar)
 
@@ -47,16 +48,12 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
                 footer = MyLoadStateAdapter { mAdapter.retry() }
             )
         }
-
         viewModel = (activity as MainActivity).viewModel
 
-        search()
-    }
-
-    private fun search() {
-        searchJob?.cancel()
-        searchJob = viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getFilmsListFlow().collectLatest {
+        // мигрировать на Flow
+        viewModel.allFilms.observe(viewLifecycleOwner){
+            searchJob?.cancel()
+            searchJob = viewLifecycleOwner.lifecycleScope.launch {
                 mAdapter.submitData(it)
             }
         }

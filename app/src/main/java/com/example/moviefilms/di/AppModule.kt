@@ -24,7 +24,7 @@ class AppModule {
                 .build()
 
             return Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/discover/")
+                .baseUrl("https://api.themoviedb.org/3/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

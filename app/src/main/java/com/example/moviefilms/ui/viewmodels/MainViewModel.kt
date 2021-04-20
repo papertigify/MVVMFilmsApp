@@ -1,6 +1,7 @@
 package com.example.moviefilms.ui.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -18,10 +19,22 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val repository: MainMoviesRepository): ViewModel() {
 
 
-    private val TAG = "MainViewModel"
+    // мигрировать на Flow
+    val allFilms: MutableLiveData<PagingData<FilmListItem>> = MutableLiveData()
 
-    fun getFilmsListFlow(): Flow<PagingData<FilmListItem>> = repository.getPagerFlow()
+    init {
+        searchAllFilms()
+    }
+
+    fun getFilmsListFlow(): Flow<PagingData<FilmListItem>> = repository.getAllMoviesPagerFlow()
         .cachedIn(viewModelScope)
 
+    fun getSearchMoviesFlow(query: String): Flow<PagingData<FilmListItem>> = repository.getSearchMoviesPagerFlow(query)
+            .cachedIn(viewModelScope)
 
+    private fun searchAllFilms() = viewModelScope.launch {
+        getFilmsListFlow().collectLatest {
+            allFilms.postValue(it)
+        }
+    }
 }

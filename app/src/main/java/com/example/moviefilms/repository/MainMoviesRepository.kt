@@ -13,14 +13,26 @@ import javax.inject.Inject
 
 class MainMoviesRepository @Inject constructor(private val mainMoviesApi: MainMoviesApi){
 
-    fun getPagerFlow(): Flow<PagingData<FilmListItem>>{
+    fun getAllMoviesPagerFlow(): Flow<PagingData<FilmListItem>>{
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
                 enablePlaceholders = false,
                 maxSize = MAX_SIZE
             ),
-            pagingSourceFactory = { MoviePagingSource(mainMoviesApi) }
+            pagingSourceFactory = { AllMoviesPagingSource(mainMoviesApi) }
+
+        ).flow
+    }
+
+    fun getSearchMoviesPagerFlow(query: String): Flow<PagingData<FilmListItem>>{
+        return Pager(
+                config = PagingConfig(
+                        pageSize = PAGE_SIZE,
+                        enablePlaceholders = false,
+                        maxSize = MAX_SIZE
+                ),
+                pagingSourceFactory = { SearchMoviesPagingSource(mainMoviesApi, query) }
 
         ).flow
     }
