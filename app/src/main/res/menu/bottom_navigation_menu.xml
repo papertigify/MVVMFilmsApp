@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/allMoviesFragment"
+    <item android:id="@+id/nav_graph_all"
         android:title="@string/all_movies"
         android:icon="@drawable/ic_breaking_news"/>
 
-    <item android:id="@+id/searchMoviesFragment"
+    <item android:id="@+id/nav_graph_search"
         android:title="@string/search_movies"
         android:icon="@drawable/ic_all_news"/>
 
-    <item android:id="@+id/savedMoviesFragment"
+    <item android:id="@+id/nav_graph_saved"
         android:title="@string/saved_movies"
         android:icon="@drawable/ic_favorite"/>
 
