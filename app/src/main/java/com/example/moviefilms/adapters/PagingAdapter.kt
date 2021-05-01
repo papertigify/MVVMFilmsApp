@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviefilms.R
 import com.example.moviefilms.network.FilmListItem
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 
 class PagingAdapter : PagingDataAdapter<FilmListItem, RecyclerView.ViewHolder>(MOVIE_COMPARATOR) {
 
@@ -35,12 +37,17 @@ class PagingAdapter : PagingDataAdapter<FilmListItem, RecyclerView.ViewHolder>(M
         private val bigPoster = "w780"
         private val posterBasePath = "https://image.tmdb.org/t/p/"
         fun bind(filmItem: FilmListItem){
-            Picasso.get()
-                .load("$posterBasePath$smallPoster${filmItem.poster_path}")
-                //.placeholder(R.drawable.pic_placeholder)
-                .into(imgContent)
+//            Picasso.get()
+//                .load("$posterBasePath$smallPoster${filmItem.poster_path}")
+//                //.placeholder(R.drawable.pic_placeholder)
+//                .into(imgContent)
+            Glide.with(itemView).load("$posterBasePath$smallPoster${filmItem.poster_path}")
+                    .apply(RequestOptions()
+                            .fitCenter()
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                            .override(Target.SIZE_ORIGINAL))
+                    .into(imgContent)
             movieTitle.text = filmItem.title
-            //Glide.with(itemView).load("$posterBasePath$smallPoster${filmItem.poster_path}").into(imgContent)
         }
     }
 

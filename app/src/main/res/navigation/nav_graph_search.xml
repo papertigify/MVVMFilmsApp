@@ -6,5 +6,17 @@
     <fragment
         android:id="@+id/searchMoviesFragment"
         android:name="com.example.moviefilms.ui.main.search.SearchMoviesFragment"
-        android:label="SearchMoviesFragment" />
+        android:label="SearchMoviesFragment" >
+        <action
+            android:id="@+id/action_searchMoviesFragment_to_detailedMovieFragment3"
+            app:destination="@id/detailedMovieFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedMovieFragment3"
+        android:name="com.example.moviefilms.ui.main.detailed.DetailedMovieFragment"
+        android:label="DetailedMovieFragment" >
+        <argument
+            android:name="movie"
+            app:argType="com.example.moviefilms.network.FilmListItem" />
+    </fragment>
 </navigation>

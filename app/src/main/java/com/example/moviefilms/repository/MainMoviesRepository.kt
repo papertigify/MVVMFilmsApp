@@ -5,13 +5,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.moviefilms.Constants.Companion.MAX_SIZE
 import com.example.moviefilms.Constants.Companion.PAGE_SIZE
+import com.example.moviefilms.db.MoviesDao
 import com.example.moviefilms.network.FilmListItem
 import com.example.moviefilms.network.MainMoviesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-class MainMoviesRepository @Inject constructor(private val mainMoviesApi: MainMoviesApi){
+class MainMoviesRepository @Inject constructor(private val mainMoviesApi: MainMoviesApi, private val moviesDao: MoviesDao){
 
     fun getAllMoviesPagerFlow(): Flow<PagingData<FilmListItem>>{
         return Pager(

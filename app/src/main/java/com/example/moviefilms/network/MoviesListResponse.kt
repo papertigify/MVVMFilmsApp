@@ -1,6 +1,9 @@
 package com.example.moviefilms.network
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class MoviesListResponse(
     @SerializedName("page")
@@ -9,7 +12,9 @@ data class MoviesListResponse(
     @SerializedName("results")
     val results: List<FilmListItem> = emptyList())
 
-//@Entity(tableName = "movieDb")
+@Entity(
+        tableName = "movieDb"
+)
 data class FilmListItem(
 
     @field:SerializedName("adult")
@@ -18,7 +23,7 @@ data class FilmListItem(
     @field:SerializedName("backdrop_path")
     val backdrop_path: String?,
 
-    //@PrimaryKey @field:SerializedName("id")
+    @PrimaryKey @field:SerializedName("id")
     val id: Int,
 
     @field:SerializedName("original_language")
@@ -50,4 +55,4 @@ data class FilmListItem(
 
     @field:SerializedName("vote_count")
     val vote_count: Int?
-)
+): Serializable

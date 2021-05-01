@@ -1,5 +1,6 @@
 package com.example.moviefilms.di.main
 
+import com.example.moviefilms.db.MoviesDao
 import com.example.moviefilms.network.MainMoviesApi
 import com.example.moviefilms.repository.MainMoviesRepository
 //import com.example.moviefilms.repository.MainMoviesRepository
@@ -19,8 +20,8 @@ class MainModule {
 
         @MainScope
         @Provides
-        fun provideMoviesRepository(mainMoviesApi: MainMoviesApi): MainMoviesRepository {
-            return MainMoviesRepository(mainMoviesApi)
+        fun provideMoviesRepository(mainMoviesApi: MainMoviesApi, moviesDao: MoviesDao): MainMoviesRepository {
+            return MainMoviesRepository(mainMoviesApi, moviesDao)
         }
     }
 }

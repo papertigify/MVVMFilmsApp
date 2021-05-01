@@ -6,5 +6,17 @@
     <fragment
         android:id="@+id/savedMoviesFragment"
         android:name="com.example.moviefilms.ui.main.saved.SavedMoviesFragment"
-        android:label="SavedMoviesFragment" />
+        android:label="SavedMoviesFragment" >
+        <action
+            android:id="@+id/action_savedMoviesFragment_to_detailedMovieFragment2"
+            app:destination="@id/detailedMovieFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedMovieFragment2"
+        android:name="com.example.moviefilms.ui.main.detailed.DetailedMovieFragment"
+        android:label="DetailedMovieFragment" >
+        <argument
+            android:name="movie"
+            app:argType="com.example.moviefilms.network.FilmListItem" />
+    </fragment>
 </navigation>

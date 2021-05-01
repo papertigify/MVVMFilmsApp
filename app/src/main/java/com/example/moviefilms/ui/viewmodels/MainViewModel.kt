@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.bumptech.glide.Glide
 import com.example.moviefilms.network.FilmListItem
 import com.example.moviefilms.network.MainMoviesApi
 import com.example.moviefilms.repository.MainMoviesRepository
 import kotlinx.coroutines.flow.*
 //import com.example.moviefilms.repository.MainMoviesRepository
 import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 

@@ -1,5 +1,10 @@
 package com.example.moviefilms.di
 
+import android.app.Application
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.example.moviefilms.db.MoviesDao
+import com.example.moviefilms.db.MoviesDatabase
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -28,6 +33,22 @@ class AppModule {
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
+        }
+
+        @Singleton
+        @Provides
+        fun provideRoomDatabase(context: Application): MoviesDatabase{
+            return Room.databaseBuilder(
+                context.applicationContext,
+                MoviesDatabase::class.java,
+                "movieDb"
+            ).build()
+        }
+
+        @Singleton
+        @Provides
+        fun provideMoviesDao(db: MoviesDatabase): MoviesDao{
+            return db.getMoviesDao()
         }
     }
 }

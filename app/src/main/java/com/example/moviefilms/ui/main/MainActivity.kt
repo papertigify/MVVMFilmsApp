@@ -7,12 +7,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.example.moviefilms.R
 import com.example.moviefilms.extension.setupWithNavController
 import com.example.moviefilms.ui.viewmodels.MainViewModel
 import com.example.moviefilms.ui.viewmodels.ViewModelProviderFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerAppCompatActivity
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -43,5 +46,14 @@ class MainActivity : DaggerAppCompatActivity() {
 
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(MainViewModel::class.java)
         Log.e(TAG, "MainActivity 2")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // cleaning Glide image cache
+        val executor = Executors.newSingleThreadExecutor()
+        executor.execute {
+            Glide.get(applicationContext).clearDiskCache()
+        }
     }
 }

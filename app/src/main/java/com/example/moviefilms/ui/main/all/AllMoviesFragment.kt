@@ -3,8 +3,10 @@ package com.example.moviefilms.ui.main.all
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -38,26 +40,43 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
     private lateinit var viewModel: MainViewModel
     private val mAdapter = PagingAdapter()
     private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private lateinit var upButton: FloatingActionButton
+    private lateinit var progressBar: ProgressBar
+    private lateinit var errorText: TextView
+    private lateinit var refreshRetryButton: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e(TAG, "AllMoviesFragment 1")
         progressBar = view.findViewById(R.id.loadingProgressBar)
+        errorText = view.findViewById(R.id.errorText)
+        refreshRetryButton = view.findViewById(R.id.refreshButtonRetry)
         recyclerView = view.findViewById(R.id.rvAllMovies)
         upButton = view.findViewById(R.id.up_button)
         initRecyclerView()
         initUpButton()
 
+        refreshRetryButton.setOnClickListener {
+            mAdapter.retry()
+        }
+
         viewModel = (activity as MainActivity).viewModel
 
+        // updating Rv from Api
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.allFilms
                 .onEach {
                     mAdapter.submitData(it)
                 }
                 .collect()
+        }
+        // Handling situation when adapter is refreshing (progress bar or error text)
+        viewLifecycleOwner.lifecycleScope.launch {
+            mAdapter.loadStateFlow.collectLatest { loadState ->
+                progressBar.isVisible = loadState.refresh is LoadState.Loading
+                errorText.isVisible = loadState.refresh is LoadState.Error
+                refreshRetryButton.isVisible = loadState.refresh is LoadState.Error
+            }
         }
     }
 
