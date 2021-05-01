@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviefilms.R
 import com.example.moviefilms.adapters.MyLoadStateAdapter
 import com.example.moviefilms.adapters.PagingAdapter
+import com.example.moviefilms.adapters.RvDelegate
+import com.example.moviefilms.network.FilmListItem
 import com.example.moviefilms.ui.main.MainActivity
 import com.example.moviefilms.ui.viewmodels.MainViewModel
 import com.example.moviefilms.ui.viewmodels.ViewModelProviderFactory
@@ -81,6 +84,18 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
     }
 
     private fun initRecyclerView() {
+        // Rv item click listener staff
+        mAdapter.attachRvDelegate(object: RvDelegate {
+            override fun openDetailedMovie(movie: FilmListItem) {
+                val bundle = Bundle()
+                bundle.putSerializable("movie", movie)
+                findNavController().navigate(
+                    R.id.action_allMoviesFragment_to_detailedMovieFragment,
+                    bundle
+                )
+            }
+        })
+
         recyclerView.apply {
             //layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
