@@ -5,45 +5,64 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.moviefilms.R
-import com.example.moviefilms.network.FilmListItem
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.example.moviefilms.R
+import com.example.moviefilms.network.FilmListItem
 
-interface PagingRvDelegate {
+interface SavedMoviesRvDelegate {
     fun openDetailedMovie(movie: FilmListItem)
 }
 
-class PagingAdapter : PagingDataAdapter<FilmListItem, RecyclerView.ViewHolder>(MOVIE_COMPARATOR) {
+class SavedMoviesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var delegatePaging: PagingRvDelegate? = null
+    // delegate
+    private var delegate: SavedMoviesRvDelegate? = null
 
-    fun attachRvDelegate(delegatePaging: PagingRvDelegate){
-        this.delegatePaging = delegatePaging
+    fun attachRvDelegate(delegate: SavedMoviesRvDelegate){
+        this.delegate = delegate
     }
+
+    // differ
+    private val DIFFER_CALLBACK = object : DiffUtil.ItemCallback<FilmListItem>(){
+        override fun areItemsTheSame(oldItem: FilmListItem, newItem: FilmListItem): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: FilmListItem, newItem: FilmListItem): Boolean {
+            return oldItem == newItem
+        }
+    }
+    val differ = AsyncListDiffer(this, DIFFER_CALLBACK)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return PagingItemViewHolder(itemView = inflater.inflate(R.layout.cell_image, parent, false), delegatePaging = delegatePaging)
+        return SavedMoviesViewHolder(
+                itemView = inflater.inflate(R.layout.cell_image, parent, false),
+                delegate = delegate
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val filmItem = getItem(position)
-        if (filmItem != null) {
-            (holder as PagingItemViewHolder).bind(filmItem)
-        }
+        val movie = differ.currentList[position]
+        (holder as SavedMoviesViewHolder).bind(movie)
     }
 
-    class PagingItemViewHolder(itemView: View, val delegatePaging: PagingRvDelegate?): RecyclerView.ViewHolder(itemView){
+    override fun getItemCount(): Int {
+        return differ.currentList.size
+    }
+
+    class SavedMoviesViewHolder(itemView: View, private val delegate: SavedMoviesRvDelegate?): RecyclerView.ViewHolder(itemView){
+
         private val imgContent: ImageView = itemView.findViewById(R.id.imageSmallPoster)
         private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
         private val smallPoster = "w185"
-        private val bigPoster = "w780"
         private val posterBasePath = "https://image.tmdb.org/t/p/"
         fun bind(movie: FilmListItem){
             Glide.with(itemView).load("$posterBasePath$smallPoster${movie.poster_path}")
@@ -55,19 +74,8 @@ class PagingAdapter : PagingDataAdapter<FilmListItem, RecyclerView.ViewHolder>(M
             movieTitle.text = movie.title
 
             itemView.setOnClickListener {
-                delegatePaging?.openDetailedMovie(movie)
+                delegate?.openDetailedMovie(movie)
             }
-        }
-    }
-
-
-    companion object {
-        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<FilmListItem>() {
-            override fun areItemsTheSame(oldItem: FilmListItem, newItem: FilmListItem): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: FilmListItem, newItem: FilmListItem): Boolean =
-                oldItem == newItem
         }
     }
 }

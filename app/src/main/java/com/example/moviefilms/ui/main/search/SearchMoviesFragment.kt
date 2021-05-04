@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviefilms.R
 import com.example.moviefilms.adapters.MyLoadStateAdapter
 import com.example.moviefilms.adapters.PagingAdapter
-import com.example.moviefilms.adapters.RvDelegate
+import com.example.moviefilms.adapters.PagingRvDelegate
 import com.example.moviefilms.network.FilmListItem
 import com.example.moviefilms.ui.main.MainActivity
 import com.example.moviefilms.ui.viewmodels.MainViewModel
@@ -24,7 +24,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -36,6 +35,8 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
     private lateinit var progressBar: ProgressBar
     private lateinit var errorText: TextView
     private lateinit var refreshRetryButton: Button
+    private lateinit var nothingFoundTextView: TextView
+
     private lateinit var viewModel: MainViewModel
 
     private var searchJob: Job? = null
@@ -44,21 +45,21 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = (activity as MainActivity).viewModel
         progressBar = view.findViewById(R.id.searchLoadingProgressBar)
         errorText = view.findViewById(R.id.searchErrorText)
         refreshRetryButton = view.findViewById(R.id.searchRefreshButtonRetry)
+        nothingFoundTextView = view.findViewById(R.id.nothingFoundTextView)
 
         etSearch = view.findViewById(R.id.etSearch)
         recyclerView = view.findViewById(R.id.rvSearchMovies)
-        upButton = view.findViewById(R.id.search_up_button)
+        upButton = view.findViewById(R.id.upButtonSearch)
         initRecyclerView()
         initUpButton()
 
         refreshRetryButton.setOnClickListener {
             mAdapter.retry()
         }
-
-        viewModel = (activity as MainActivity).viewModel
 
         etSearch.addTextChangedListener { editable ->
             searchJob?.cancel()
@@ -70,6 +71,7 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
                             mAdapter.submitData(pagingData)
                         }
                     }
+                    nothingFoundTextView.isVisible = it.toString().isNotEmpty()
                 }
             }
         }
@@ -79,13 +81,14 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
                 progressBar.isVisible = loadState.refresh is LoadState.Loading
                 errorText.isVisible = loadState.refresh is LoadState.Error
                 refreshRetryButton.isVisible = loadState.refresh is LoadState.Error
+                nothingFoundTextView.isVisible = loadState.refresh is LoadState.NotLoading && (mAdapter.itemCount == 0) && etSearch.text.toString().isNotEmpty()
             }
         }
     }
 
     private fun initRecyclerView(){
-        // Rv item click listener staff
-        mAdapter.attachRvDelegate(object: RvDelegate {
+        // Rv item click listener stuff
+        mAdapter.attachRvDelegate(object: PagingRvDelegate {
             override fun openDetailedMovie(movie: FilmListItem) {
                 val bundle = Bundle()
                 bundle.putSerializable("movie", movie)

@@ -3,6 +3,7 @@ package com.example.moviefilms.db
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.moviefilms.network.FilmListItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MoviesDao {
@@ -11,8 +12,8 @@ interface MoviesDao {
     suspend fun insert(movie: FilmListItem)
 
     @Query("SELECT * FROM movieDb")
-    fun getAllMovies(): LiveData<List<FilmListItem>>
+    fun getAllSavedMovies(): Flow<List<FilmListItem>>
 
     @Delete
-    fun deleteMovie(movie: FilmListItem)
+    suspend fun deleteMovie(movie: FilmListItem)
 }

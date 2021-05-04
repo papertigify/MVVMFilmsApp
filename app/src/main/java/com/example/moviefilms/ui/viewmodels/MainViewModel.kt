@@ -39,4 +39,15 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
             _allFilms.value = it
         }
     }
+
+    // db calls
+    fun insertMovie(movie: FilmListItem) = viewModelScope.launch {
+        repository.insertMovie(movie)
+    }
+
+    fun deleteMovie(movie: FilmListItem) = viewModelScope.launch {
+        repository.deleteMovie(movie)
+    }
+
+    fun getAllSavedMovies() = repository.getAllSavedMovies()
 }

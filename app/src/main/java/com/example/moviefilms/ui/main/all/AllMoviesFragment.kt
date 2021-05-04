@@ -7,31 +7,26 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviefilms.R
 import com.example.moviefilms.adapters.MyLoadStateAdapter
 import com.example.moviefilms.adapters.PagingAdapter
-import com.example.moviefilms.adapters.RvDelegate
+import com.example.moviefilms.adapters.PagingRvDelegate
 import com.example.moviefilms.network.FilmListItem
 import com.example.moviefilms.ui.main.MainActivity
 import com.example.moviefilms.ui.viewmodels.MainViewModel
-import com.example.moviefilms.ui.viewmodels.ViewModelProviderFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
 
@@ -50,20 +45,19 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = (activity as MainActivity).viewModel
         Log.e(TAG, "AllMoviesFragment 1")
         progressBar = view.findViewById(R.id.loadingProgressBar)
         errorText = view.findViewById(R.id.errorText)
         refreshRetryButton = view.findViewById(R.id.refreshButtonRetry)
         recyclerView = view.findViewById(R.id.rvAllMovies)
-        upButton = view.findViewById(R.id.up_button)
+        upButton = view.findViewById(R.id.upButtonAll)
         initRecyclerView()
         initUpButton()
 
         refreshRetryButton.setOnClickListener {
             mAdapter.retry()
         }
-
-        viewModel = (activity as MainActivity).viewModel
 
         // updating Rv from Api
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -84,8 +78,8 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
     }
 
     private fun initRecyclerView() {
-        // Rv item click listener staff
-        mAdapter.attachRvDelegate(object: RvDelegate {
+        // Rv item click listener stuff
+        mAdapter.attachRvDelegate(object: PagingRvDelegate {
             override fun openDetailedMovie(movie: FilmListItem) {
                 val bundle = Bundle()
                 bundle.putSerializable("movie", movie)

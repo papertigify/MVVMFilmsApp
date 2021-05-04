@@ -11,7 +11,7 @@ import com.example.moviefilms.network.MainMoviesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-
+// without
 class MainMoviesRepository @Inject constructor(private val mainMoviesApi: MainMoviesApi, private val moviesDao: MoviesDao){
 
     fun getAllMoviesPagerFlow(): Flow<PagingData<FilmListItem>>{
@@ -37,4 +37,15 @@ class MainMoviesRepository @Inject constructor(private val mainMoviesApi: MainMo
 
         ).flow
     }
+
+    suspend fun insertMovie(movie: FilmListItem){
+        moviesDao.insert(movie)
+    }
+
+    suspend fun deleteMovie(movie: FilmListItem){
+        moviesDao.deleteMovie(movie)
+    }
+
+    fun getAllSavedMovies() = moviesDao.getAllSavedMovies()
+
 }
