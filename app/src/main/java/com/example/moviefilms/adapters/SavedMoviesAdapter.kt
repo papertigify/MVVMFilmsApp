@@ -61,7 +61,7 @@ class SavedMoviesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class SavedMoviesViewHolder(itemView: View, private val delegate: SavedMoviesRvDelegate?): RecyclerView.ViewHolder(itemView){
 
         private val imgContent: ImageView = itemView.findViewById(R.id.imageSmallPoster)
-        private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
+        //private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
         private val smallPoster = "w185"
         private val posterBasePath = "https://image.tmdb.org/t/p/"
         fun bind(movie: FilmListItem){
@@ -71,7 +71,7 @@ class SavedMoviesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             .format(DecodeFormat.PREFER_ARGB_8888)
                             .override(Target.SIZE_ORIGINAL))
                     .into(imgContent)
-            movieTitle.text = movie.title
+            //movieTitle.text = movie.title
 
             itemView.setOnClickListener {
                 delegate?.openDetailedMovie(movie)

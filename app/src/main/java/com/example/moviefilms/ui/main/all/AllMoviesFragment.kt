@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviefilms.R
@@ -91,8 +92,8 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
         })
 
         recyclerView.apply {
-            //layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+            //layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = mAdapter.withLoadStateHeaderAndFooter(
                 header = MyLoadStateAdapter { mAdapter.retry() },
                 footer = MyLoadStateAdapter { mAdapter.retry() }

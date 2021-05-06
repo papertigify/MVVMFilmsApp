@@ -23,6 +23,8 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
     private val _allFilms = MutableStateFlow(PagingData.empty<FilmListItem>())
     val allFilms: StateFlow<PagingData<FilmListItem>> = _allFilms.asStateFlow()
 
+    var currentQuery: String = ""
+
     init {
         searchAllFilms()
     }
