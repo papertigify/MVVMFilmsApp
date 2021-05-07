@@ -92,8 +92,8 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
         })
 
         recyclerView.apply {
-            layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-            //layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            //layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = mAdapter.withLoadStateHeaderAndFooter(
                 header = MyLoadStateAdapter { mAdapter.retry() },
                 footer = MyLoadStateAdapter { mAdapter.retry() }

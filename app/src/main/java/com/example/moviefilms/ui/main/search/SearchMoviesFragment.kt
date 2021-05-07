@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -68,6 +69,10 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
                 delay(500L)
                 editable?.let { query ->
                     if(query.toString().isNotEmpty() && query.toString() != viewModel.currentQuery) {
+                        lifecycleScope.launch {
+                            recyclerView.scrollToPosition(0)
+                            mAdapter.submitData(PagingData.empty())
+                        }
                         viewModel.currentQuery = query.toString()
                         viewModel.getSearchMoviesFlow(query.toString()).collectLatest { pagingData ->
                             mAdapter.submitData(pagingData)
@@ -102,8 +107,8 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
         })
 
         recyclerView.apply {
-            layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-            //layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            //layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = mAdapter.withLoadStateHeaderAndFooter(
                 header = MyLoadStateAdapter { mAdapter.retry() },
                 footer = MyLoadStateAdapter { mAdapter.retry() }

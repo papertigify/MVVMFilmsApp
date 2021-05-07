@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.example.moviefilms.Constants
 import com.example.moviefilms.R
 import com.example.moviefilms.network.FilmListItem
 
@@ -62,14 +64,14 @@ class SavedMoviesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val imgContent: ImageView = itemView.findViewById(R.id.imageSmallPoster)
         //private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
-        private val smallPoster = "w185"
-        private val posterBasePath = "https://image.tmdb.org/t/p/"
+
         fun bind(movie: FilmListItem){
-            Glide.with(itemView).load("$posterBasePath$smallPoster${movie.poster_path}")
+            Glide.with(itemView).load("${Constants.posterPath}${movie.poster_path}")
                     .apply(RequestOptions()
                             .fitCenter()
                             .format(DecodeFormat.PREFER_ARGB_8888)
                             .override(Target.SIZE_ORIGINAL))
+                    //.diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imgContent)
             //movieTitle.text = movie.title
 

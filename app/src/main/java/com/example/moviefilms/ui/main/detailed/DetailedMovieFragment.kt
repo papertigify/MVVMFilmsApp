@@ -30,7 +30,8 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
 
         viewModel = (activity as MainActivity).viewModel
 
-        saveButton.setOnClickListener { 
+        saveButton.setOnClickListener {
+
             viewModel.insertMovie(movie)
             Snackbar.make(view, "Movie successfully saved", Snackbar.LENGTH_SHORT).show()
         }

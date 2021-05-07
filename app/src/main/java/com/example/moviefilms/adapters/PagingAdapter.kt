@@ -14,6 +14,7 @@ import com.example.moviefilms.network.FilmListItem
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.example.moviefilms.Constants
 
 interface PagingRvDelegate {
     fun openDetailedMovie(movie: FilmListItem)
@@ -41,20 +42,17 @@ class PagingAdapter : PagingDataAdapter<FilmListItem, RecyclerView.ViewHolder>(M
 
     class PagingItemViewHolder(itemView: View, val delegatePaging: PagingRvDelegate?): RecyclerView.ViewHolder(itemView){
         private val imgContent: ImageView = itemView.findViewById(R.id.imageSmallPoster)
-        //private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
-        private val smallPoster = "w185"
-        private val bigPoster = "w780"
-        private val posterBasePath = "https://image.tmdb.org/t/p/"
+        private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
         fun bind(movie: FilmListItem){
 
-                Glide.with(itemView).load("$posterBasePath$smallPoster${movie.poster_path}")
+                Glide.with(itemView).load("${Constants.posterPath}${movie.poster_path}")
                         .apply(RequestOptions()
                                 .fitCenter()
                                 .format(DecodeFormat.PREFER_ARGB_8888)
                                 .override(Target.SIZE_ORIGINAL))
                         .error(R.drawable.pic_placeholder)
                         .into(imgContent)
-            //movieTitle.text = movie.title
+            movieTitle.text = movie.title
 
             itemView.setOnClickListener {
                 delegatePaging?.openDetailedMovie(movie)
