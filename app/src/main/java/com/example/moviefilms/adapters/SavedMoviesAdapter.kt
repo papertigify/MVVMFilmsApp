@@ -1,5 +1,7 @@
 package com.example.moviefilms.adapters
 
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,9 @@ import com.bumptech.glide.request.target.Target
 import com.example.moviefilms.Constants
 import com.example.moviefilms.R
 import com.example.moviefilms.network.FilmListItem
+import com.example.moviefilms.utils.MyFileManager
+import java.io.File
+import javax.inject.Inject
 
 interface SavedMoviesRvDelegate {
     fun openDetailedMovie(movie: FilmListItem)
@@ -62,18 +67,23 @@ class SavedMoviesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class SavedMoviesViewHolder(itemView: View, private val delegate: SavedMoviesRvDelegate?): RecyclerView.ViewHolder(itemView){
 
+        private val TAG = "SavedMoviesAdapter"
         private val imgContent: ImageView = itemView.findViewById(R.id.imageSmallPoster)
-        //private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
+        private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
 
         fun bind(movie: FilmListItem){
-            Glide.with(itemView).load("${Constants.posterPath}${movie.poster_path}")
+
+            val uri = movie.storageFilePath?.let {
+                Uri.fromFile(File(it))
+            }
+            Glide.with(itemView).load(uri)
                     .apply(RequestOptions()
                             .fitCenter()
                             .format(DecodeFormat.PREFER_ARGB_8888)
                             .override(Target.SIZE_ORIGINAL))
-                    //.diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.pic_placeholder)
                     .into(imgContent)
-            //movieTitle.text = movie.title
+            movieTitle.text = movie.title
 
             itemView.setOnClickListener {
                 delegate?.openDetailedMovie(movie)

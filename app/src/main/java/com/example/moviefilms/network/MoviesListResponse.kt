@@ -54,5 +54,8 @@ data class FilmListItem(
     val vote_average: Double?,
 
     @field:SerializedName("vote_count")
-    val vote_count: Int?
+    val vote_count: Int?,
+
+    var storageFilePath: String? = null
+
 ): Serializable

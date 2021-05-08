@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.moviefilms.network.FilmListItem
 import com.example.moviefilms.network.MainMoviesApi
 import com.example.moviefilms.repository.MainMoviesRepository
+import com.example.moviefilms.ui.main.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 //import com.example.moviefilms.repository.MainMoviesRepository
 import kotlinx.coroutines.launch
@@ -52,4 +54,6 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
     }
 
     fun getAllSavedMovies() = repository.getAllSavedMovies()
+
+
 }

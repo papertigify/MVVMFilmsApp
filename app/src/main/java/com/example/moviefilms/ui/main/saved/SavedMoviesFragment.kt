@@ -18,13 +18,13 @@ import com.example.moviefilms.adapters.SavedMoviesRvDelegate
 import com.example.moviefilms.network.FilmListItem
 import com.example.moviefilms.ui.main.MainActivity
 import com.example.moviefilms.ui.viewmodels.MainViewModel
+import com.example.moviefilms.utils.MyFileManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SavedMoviesFragment: DaggerFragment(R.layout.saved_movies_fragment) {
 
@@ -35,6 +35,9 @@ class SavedMoviesFragment: DaggerFragment(R.layout.saved_movies_fragment) {
     private lateinit var nothingFoundTextView: TextView
 
     private var scrollJob: Job? = null
+
+    @Inject
+    lateinit var fileManager: MyFileManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -116,15 +119,24 @@ class SavedMoviesFragment: DaggerFragment(R.layout.saved_movies_fragment) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
                 val currentMovie = mAdapter.differ.currentList[position]
+                var isDeleted = false
                 if (currentMovie != null) {
                     viewModel.deleteMovie(currentMovie)
+                    isDeleted = true
                 }
                 view?.let {
                     Snackbar.make(it, "Successfully deleted this article", Snackbar.LENGTH_LONG)
                             .setAction("Undo"){
-                                    viewModel.insertMovie(currentMovie)
+                                viewModel.insertMovie(currentMovie)
+                                isDeleted = false
                             }
                             .show()
+                }
+                // delete image from storage
+                if(isDeleted) {
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                        currentMovie.storageFilePath?.let { fileManager.deleteImageFromInternalStorage(requireContext().applicationContext, it) }
+                    }
                 }
             }
         })

@@ -44,7 +44,6 @@ class PagingAdapter : PagingDataAdapter<FilmListItem, RecyclerView.ViewHolder>(M
         private val imgContent: ImageView = itemView.findViewById(R.id.imageSmallPoster)
         private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
         fun bind(movie: FilmListItem){
-
                 Glide.with(itemView).load("${Constants.posterPath}${movie.poster_path}")
                         .apply(RequestOptions()
                                 .fitCenter()

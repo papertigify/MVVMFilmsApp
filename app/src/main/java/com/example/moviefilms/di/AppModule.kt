@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.moviefilms.db.MoviesDao
 import com.example.moviefilms.db.MoviesDatabase
+import com.example.moviefilms.utils.MyFileManager
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -49,6 +50,12 @@ class AppModule {
         @Provides
         fun provideMoviesDao(db: MoviesDatabase): MoviesDao{
             return db.getMoviesDao()
+        }
+
+        @Singleton
+        @Provides
+        fun provideFileManager(): MyFileManager{
+            return MyFileManager()
         }
     }
 }

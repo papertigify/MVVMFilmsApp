@@ -69,11 +69,13 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
                 delay(500L)
                 editable?.let { query ->
                     if(query.toString().isNotEmpty() && query.toString() != viewModel.currentQuery) {
+                        // refresh Rv when new query executes
                         lifecycleScope.launch {
                             recyclerView.scrollToPosition(0)
                             mAdapter.submitData(PagingData.empty())
                         }
                         viewModel.currentQuery = query.toString()
+                        // query
                         viewModel.getSearchMoviesFlow(query.toString()).collectLatest { pagingData ->
                             mAdapter.submitData(pagingData)
                         }
