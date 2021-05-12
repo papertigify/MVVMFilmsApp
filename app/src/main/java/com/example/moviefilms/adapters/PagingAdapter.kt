@@ -42,7 +42,7 @@ class PagingAdapter : PagingDataAdapter<FilmListItem, RecyclerView.ViewHolder>(M
 
     class PagingItemViewHolder(itemView: View, val delegatePaging: PagingRvDelegate?): RecyclerView.ViewHolder(itemView){
         private val imgContent: ImageView = itemView.findViewById(R.id.imageSmallPoster)
-        private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
+        //private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
         fun bind(movie: FilmListItem){
                 Glide.with(itemView).load("${Constants.posterPath}${movie.poster_path}")
                         .apply(RequestOptions()
@@ -51,7 +51,7 @@ class PagingAdapter : PagingDataAdapter<FilmListItem, RecyclerView.ViewHolder>(M
                                 .override(Target.SIZE_ORIGINAL))
                         .error(R.drawable.pic_placeholder)
                         .into(imgContent)
-            movieTitle.text = movie.title
+            //movieTitle.text = movie.title
 
             itemView.setOnClickListener {
                 delegatePaging?.openDetailedMovie(movie)

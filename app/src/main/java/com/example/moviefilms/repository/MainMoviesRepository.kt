@@ -38,6 +38,9 @@ class MainMoviesRepository @Inject constructor(private val mainMoviesApi: MainMo
         ).flow
     }
 
+    suspend fun getMovieTrailers(movieId: Int) = mainMoviesApi.getMovieTrailers(movieId)
+
+    // db
     suspend fun insertMovie(movie: FilmListItem){
         moviesDao.insert(movie)
     }

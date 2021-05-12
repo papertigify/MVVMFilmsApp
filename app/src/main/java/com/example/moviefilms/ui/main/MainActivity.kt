@@ -47,13 +47,4 @@ class MainActivity : DaggerAppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(MainViewModel::class.java)
         Log.e(TAG, "MainActivity 2")
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // cleaning Glide image cache
-        val executor = Executors.newSingleThreadExecutor()
-        executor.execute {
-            Glide.get(applicationContext).clearDiskCache()
-        }
-    }
 }

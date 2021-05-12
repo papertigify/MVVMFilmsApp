@@ -70,7 +70,7 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
                 editable?.let { query ->
                     if(query.toString().isNotEmpty() && query.toString() != viewModel.currentQuery) {
                         // refresh Rv when new query executes
-                        lifecycleScope.launch {
+                        launch {
                             recyclerView.scrollToPosition(0)
                             mAdapter.submitData(PagingData.empty())
                         }
@@ -109,8 +109,8 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
         })
 
         recyclerView.apply {
-            //layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            //layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = mAdapter.withLoadStateHeaderAndFooter(
                 header = MyLoadStateAdapter { mAdapter.retry() },
                 footer = MyLoadStateAdapter { mAdapter.retry() }

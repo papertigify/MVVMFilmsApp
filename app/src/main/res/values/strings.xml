@@ -6,4 +6,9 @@
     <string name="all_movies">All Movies</string>
     <string name="poster_of_film">Poster of Film</string>
     <string name="retry">Retry</string>
+    <string name="favourite">favourite</string>
+    <string name="movie_image">Movie Image</string>
+    <string name="image_adult">image adult</string>
+    <string name="watch_trailer">Watch Trailer</string>
+    <string name="overview">Overview:</string>
 </resources>

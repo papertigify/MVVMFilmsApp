@@ -9,12 +9,18 @@ import androidx.paging.cachedIn
 import com.bumptech.glide.Glide
 import com.example.moviefilms.network.FilmListItem
 import com.example.moviefilms.network.MainMoviesApi
+import com.example.moviefilms.network.TrailersListItem
+import com.example.moviefilms.network.TrailersListResponse
 import com.example.moviefilms.repository.MainMoviesRepository
 import com.example.moviefilms.ui.main.MainActivity
+import com.example.moviefilms.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 //import com.example.moviefilms.repository.MainMoviesRepository
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
+import java.lang.Exception
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -25,6 +31,9 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
     private val _allFilms = MutableStateFlow(PagingData.empty<FilmListItem>())
     val allFilms: StateFlow<PagingData<FilmListItem>> = _allFilms.asStateFlow()
 
+    private val _trailers = MutableStateFlow(Resource.init<TrailersListResponse>())
+    val trailers: StateFlow<Resource<TrailersListResponse>> = _trailers.asStateFlow()
+
     var currentQuery: String = ""
 
     init {
@@ -34,13 +43,23 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
     private fun getFilmsListFlow(): Flow<PagingData<FilmListItem>> = repository.getAllMoviesPagerFlow()
         .cachedIn(viewModelScope)
 
-    fun getSearchMoviesFlow(query: String): Flow<PagingData<FilmListItem>> = repository.getSearchMoviesPagerFlow(query)
-            .cachedIn(viewModelScope)
-
-
     private fun searchAllFilms() = viewModelScope.launch {
         getFilmsListFlow().collectLatest {
             _allFilms.value = it
+        }
+    }
+
+    fun getSearchMoviesFlow(query: String): Flow<PagingData<FilmListItem>> = repository.getSearchMoviesPagerFlow(query)
+            .cachedIn(viewModelScope)
+
+    fun getMovieTrailers(movieId: Int) = viewModelScope.launch {
+        try {
+            val response = repository.getMovieTrailers(movieId)
+            _trailers.value = Resource.success(response)
+        } catch (e: IOException){
+            _trailers.value = Resource.error(e.message)
+        } catch (e: HttpException){
+            _trailers.value = Resource.error(e.message)
         }
     }
 
@@ -54,6 +73,4 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
     }
 
     fun getAllSavedMovies() = repository.getAllSavedMovies()
-
-
 }
