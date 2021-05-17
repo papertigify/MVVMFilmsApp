@@ -2,7 +2,10 @@ package com.example.moviefilms.network
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.moviefilms.db.TypeConverterClass
 import com.google.gson.annotations.SerializedName
+import org.jetbrains.annotations.NotNull
 import java.io.Serializable
 
 data class MoviesListResponse(
@@ -15,6 +18,7 @@ data class MoviesListResponse(
 @Entity(
         tableName = "movieDb"
 )
+@TypeConverters(TypeConverterClass::class)
 data class FilmListItem(
 
     @field:SerializedName("adult")
@@ -22,6 +26,9 @@ data class FilmListItem(
 
     @field:SerializedName("backdrop_path")
     val backdrop_path: String?,
+
+    @field:SerializedName("genre_ids")
+    val genre_ids: List<Int>?,
 
     @PrimaryKey @field:SerializedName("id")
     val id: Int,
@@ -56,6 +63,10 @@ data class FilmListItem(
     @field:SerializedName("vote_count")
     val vote_count: Int?,
 
-    var storageFilePath: String? = null
+    var posterStoragePath: String?,
+
+    var backdropStoragePath: String?,
+
+    var trailerUrl: String?
 
 ): Serializable

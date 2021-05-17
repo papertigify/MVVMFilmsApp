@@ -1,26 +1,20 @@
 package com.example.moviefilms.adapters
 
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.example.moviefilms.Constants
 import com.example.moviefilms.R
 import com.example.moviefilms.network.FilmListItem
-import com.example.moviefilms.utils.MyFileManager
 import java.io.File
-import javax.inject.Inject
 
 interface SavedMoviesRvDelegate {
     fun openDetailedMovie(movie: FilmListItem)
@@ -73,7 +67,7 @@ class SavedMoviesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(movie: FilmListItem){
 
-            val uri = movie.storageFilePath?.let {
+            val uri = movie.posterStoragePath?.let {
                 Uri.fromFile(File(it))
             }
             Glide.with(itemView).load(uri)

@@ -13,17 +13,17 @@ import java.io.IOException
 class MyFileManager {
     private val TAG = "MyFileManager"
 
-    // возвращать пустую строку если возникла ошибка
+
     fun saveImage(context: Context, bitmapImage: Bitmap): String{
         val FILE_NAME = System.currentTimeMillis().toString() + ".bmp"
         return try {
             context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).let { fos ->
                 bitmapImage.compress(Bitmap.CompressFormat.PNG, 90, fos)
-//                try{
-//                    fos.close()
-//                } catch (e: IOException){
-//                    e.printStackTrace()
-//                }
+                try{
+                    fos.close()
+                } catch (e: IOException){
+                    e.printStackTrace()
+                }
             }
             context.getFileStreamPath(FILE_NAME).toString()
         } catch (e: FileNotFoundException){

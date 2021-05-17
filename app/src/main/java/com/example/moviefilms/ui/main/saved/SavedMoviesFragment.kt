@@ -5,15 +5,12 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviefilms.R
-import com.example.moviefilms.adapters.PagingAdapter
-import com.example.moviefilms.adapters.PagingRvDelegate
 import com.example.moviefilms.adapters.SavedMoviesAdapter
 import com.example.moviefilms.adapters.SavedMoviesRvDelegate
 import com.example.moviefilms.network.FilmListItem
@@ -123,6 +120,7 @@ class SavedMoviesFragment: DaggerFragment(R.layout.saved_movies_fragment) {
                 val currentMovie = mAdapter.differ.currentList[position]
                 var isDeleted = false
                 if (currentMovie != null) {
+                    // delete current movie from db
                     viewModel.deleteMovie(currentMovie)
                     isDeleted = true
                 }
@@ -136,8 +134,9 @@ class SavedMoviesFragment: DaggerFragment(R.layout.saved_movies_fragment) {
                 }
                 // delete image from storage
                 if(isDeleted) {
-                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                        currentMovie.storageFilePath?.let { fileManager.deleteImageFromInternalStorage(requireContext().applicationContext, it) }
+                    viewModel.viewModelScope.launch(Dispatchers.IO) {
+                        currentMovie.posterStoragePath?.let { fileManager.deleteImageFromInternalStorage(requireContext().applicationContext, it) }
+                        currentMovie.backdropStoragePath?.let {fileManager.deleteImageFromInternalStorage(requireContext().applicationContext, it)}
                     }
                 }
             }

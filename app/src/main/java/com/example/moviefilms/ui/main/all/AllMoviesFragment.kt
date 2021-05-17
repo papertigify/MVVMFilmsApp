@@ -34,7 +34,6 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
 
     private val TAG = "AllMoviesFragment"
 
-    private var searchJob: Job? = null
     private var scrollJob: Job? = null
 
     private lateinit var viewModel: MainViewModel
