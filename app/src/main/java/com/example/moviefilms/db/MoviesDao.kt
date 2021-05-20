@@ -14,6 +14,9 @@ interface MoviesDao {
     @Query("SELECT * FROM movieDb")
     fun getAllSavedMovies(): Flow<List<FilmListItem>>
 
+    @Query("SELECT * FROM movieDb WHERE id = :movieId")
+    suspend fun getMovie(movieId: Int): FilmListItem?
+
     @Delete
     suspend fun deleteMovie(movie: FilmListItem)
 }

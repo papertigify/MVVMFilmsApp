@@ -124,7 +124,7 @@ class SavedMoviesFragment: DaggerFragment(R.layout.saved_movies_fragment) {
                     isDeleted = true
                 }
                 view?.let {
-                    Snackbar.make(it, "Successfully deleted this article", Snackbar.LENGTH_LONG)
+                    Snackbar.make(it, "Successfully deleted this movie", Snackbar.LENGTH_LONG)
                             .setAction("Undo"){
                                 viewModel.insertMovie(currentMovie)
                                 isDeleted = false

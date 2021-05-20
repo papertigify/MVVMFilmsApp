@@ -51,4 +51,7 @@ class MainMoviesRepository @Inject constructor(private val mainMoviesApi: MainMo
 
     fun getAllSavedMovies() = moviesDao.getAllSavedMovies()
 
+    suspend fun isMovieInDatabase(movieId: Int): Boolean {
+        return moviesDao.getMovie(movieId) != null
+    }
 }

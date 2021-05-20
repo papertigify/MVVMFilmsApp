@@ -39,8 +39,6 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
 
     private var currentTrailerUrl: String? = null
     private val TAG = "DetailedMovieFragment"
-    @Inject
-    lateinit var fileManager: MyFileManager
 
     private lateinit var viewModel: MainViewModel
     private lateinit var title: TextView
@@ -77,14 +75,14 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
         rating = view.findViewById(R.id.textRating)
 
         //safe args
-        val movie = args.movie
+        val movie = args.movie.copy()
         title.text = movie.title
         ratingBar.rating = movie.vote_average?.toFloat() ?: 0f
         rating.text = movie.vote_average.toString()
         totalVotes.text = movie.vote_count.toString()
         overviewText.text = movie.overview
 
-        genres.text = getGenres(movie.genre_ids)
+        genres.text = viewModel.getGenres(movie.genre_ids)
 
         imageAdult.isVisible = movie.adult ?: false
 
@@ -112,9 +110,7 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
                     .into(imageBackdrop)
         }
 
-
         // getting trailers
-
         // first time opened this fragment or trailer url was null
         if (currentTrailerUrl == null && movie.trailerUrl == null) {
             Log.e(TAG, "first time")
@@ -124,13 +120,11 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
                         .onEach { response ->
                             when (response.status) {
                                 Resource.Status.SUCCESS -> {
-                                    val url = getTrailerUrl(response.data)
-                                    movie.trailerUrl = url
-                                    currentTrailerUrl = url
-
+                                    movie.trailerUrl = response.data
+                                    currentTrailerUrl = response.data
                                     buttonTrailer.setOnClickListener {
-                                        if (url != null) {
-                                            startTrailer(url)
+                                        if (response.data != null) {
+                                            startTrailer(response.data)
                                         } else {
                                             Toast.makeText(context, "Trailer not found(", Toast.LENGTH_SHORT).show()
                                         }
@@ -156,50 +150,8 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
 
         saveButton.setOnClickListener {
             // saving images to local storage
-            viewLifecycleOwner.lifecycleScope.launch {
-                val bitmapBackdrop = imageBackdrop.drawable.toBitmap()
-                withContext(Dispatchers.IO) {
-                    val bitmapPoster = try {
-                        Glide.with(requireContext().applicationContext)
-                                .asBitmap()
-                                .load("${Constants.posterPath}${movie.poster_path}")
-                                .apply(RequestOptions()
-                                        .fitCenter()
-                                        .format(DecodeFormat.PREFER_ARGB_8888)
-                                        .override(Target.SIZE_ORIGINAL)
-                                )
-                                .submit().get()
-                    } catch (e: ExecutionException) {
-                        Glide.with(requireContext().applicationContext)
-                                .asBitmap()
-                                .load(R.drawable.pic_placeholder)
-                                .apply(RequestOptions()
-                                        .fitCenter()
-                                        .format(DecodeFormat.PREFER_ARGB_8888)
-                                        .override(Target.SIZE_ORIGINAL)
-                                )
-                                .submit().get()
-                    }
-
-                    val posterPath = fileManager.saveImage(requireContext().applicationContext, bitmapPoster)
-                    val backdropPath = fileManager.saveImage(requireContext().applicationContext, bitmapBackdrop)
-                    movie.posterStoragePath = posterPath
-                    movie.backdropStoragePath = backdropPath
-                }
-                Log.e(TAG, "In saving corrucent ${movie.trailerUrl.toString()}")
-                viewModel.insertMovie(movie)
-                Snackbar.make(view, "Movie successfully saved", Snackbar.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun getTrailerUrl(response: TrailersListResponse?): String?{
-        return if(response != null) {
-            val item = response.results.find { it.site == "YouTube" }
-            val url = item?.key?.let{"https://www.youtube.com/watch?v=${item.key}"}
-            url
-        } else {
-            null
+            viewModel.saveImagesToStorage(movie)
+            Snackbar.make(view, "Movie successfully saved", Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -207,13 +159,6 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
         val uri = Uri.parse(trailerUrl)
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
-    }
-
-    private fun getGenres(listGenreIds: List<Int>?): String{
-        val genresList = listGenreIds?.map { Constants.genres[it] }
-        var result = ""
-        genresList?.forEach { result += "$it, "}
-        return result.dropLast(2)
     }
 }
 
