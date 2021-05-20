@@ -40,6 +40,7 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
         searchAllFilms()
     }
 
+    // all movies
     private fun getFilmsListFlow(): Flow<PagingData<FilmListItem>> = repository.getAllMoviesPagerFlow()
         .cachedIn(viewModelScope)
 
@@ -49,9 +50,12 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
         }
     }
 
+    // search movies
     fun getSearchMoviesFlow(query: String): Flow<PagingData<FilmListItem>> = repository.getSearchMoviesPagerFlow(query)
             .cachedIn(viewModelScope)
 
+
+    // getting trailer
     fun getMovieTrailers(movieId: Int) = viewModelScope.launch {
         try {
             val response = repository.getMovieTrailers(movieId)

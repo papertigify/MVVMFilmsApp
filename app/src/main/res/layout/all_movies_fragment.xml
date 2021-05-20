@@ -47,9 +47,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="332dp"
-        android:layout_marginEnd="140dp"
-        android:text="Error shiii"
-        android:textSize="30sp"
+        android:layout_marginEnd="100dp"
+        android:text="Something went wrong"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/errorText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="372dp"
+        android:layout_marginEnd="76dp"
+        android:text="Please, check your internet connection"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="15sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,8 +72,10 @@
         android:id="@+id/refreshButtonRetry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="384dp"
-        android:text="Button"
+        android:layout_marginTop="404dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/retry"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

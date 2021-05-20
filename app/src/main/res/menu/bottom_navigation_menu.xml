@@ -3,14 +3,14 @@
 
     <item android:id="@+id/nav_graph_all"
         android:title="@string/all_movies"
-        android:icon="@drawable/ic_breaking_news"/>
+        android:icon="@drawable/ic_all_movies"/>
 
     <item android:id="@+id/nav_graph_search"
         android:title="@string/search_movies"
-        android:icon="@drawable/ic_all_news"/>
+        android:icon="@drawable/ic_search_movies"/>
 
     <item android:id="@+id/nav_graph_saved"
         android:title="@string/saved_movies"
-        android:icon="@drawable/ic_favorite"/>
+        android:icon="@drawable/ic_favorite_movies"/>
 
 </menu>

@@ -11,4 +11,6 @@
     <string name="image_adult">image adult</string>
     <string name="watch_trailer">Watch Trailer</string>
     <string name="overview">Overview:</string>
+    <string name="you_haven_t_got_saved_movies_yet">You haven\'t got saved movies yet</string>
+    <string name="please_check_your_internet_connection">Please, check your internet connection</string>
 </resources>

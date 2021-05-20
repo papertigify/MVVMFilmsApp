@@ -33,7 +33,6 @@ class SavedMoviesFragment: DaggerFragment(R.layout.saved_movies_fragment) {
     private lateinit var nothingFoundTextView: TextView
 
     private var scrollJob: Job? = null
-
     @Inject
     lateinit var fileManager: MyFileManager
 

@@ -42,6 +42,7 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
     private lateinit var upButton: FloatingActionButton
     private lateinit var progressBar: ProgressBar
     private lateinit var errorText: TextView
+    private lateinit var errorText2: TextView
     private lateinit var refreshRetryButton: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,6 +51,7 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
         Log.e(TAG, "AllMoviesFragment 1")
         progressBar = view.findViewById(R.id.loadingProgressBar)
         errorText = view.findViewById(R.id.errorText)
+        errorText2 = view.findViewById(R.id.errorText2)
         refreshRetryButton = view.findViewById(R.id.refreshButtonRetry)
         recyclerView = view.findViewById(R.id.rvAllMovies)
         upButton = view.findViewById(R.id.upButtonAll)
@@ -73,6 +75,7 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
             mAdapter.loadStateFlow.collectLatest { loadState ->
                 progressBar.isVisible = loadState.refresh is LoadState.Loading
                 errorText.isVisible = loadState.refresh is LoadState.Error
+                errorText2.isVisible = loadState.refresh is LoadState.Error
                 refreshRetryButton.isVisible = loadState.refresh is LoadState.Error
             }
         }

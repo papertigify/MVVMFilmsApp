@@ -30,7 +30,7 @@
             android:layout_marginTop="180dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/favourite"
-            android:src="@drawable/ic_favorite"
+            android:src="@drawable/ic_favorite_movies"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

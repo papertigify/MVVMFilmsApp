@@ -36,6 +36,7 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
     private lateinit var upButton: FloatingActionButton
     private lateinit var progressBar: ProgressBar
     private lateinit var errorText: TextView
+    private lateinit var errorText2: TextView
     private lateinit var refreshRetryButton: Button
     private lateinit var nothingFoundTextView: TextView
 
@@ -50,6 +51,7 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
         viewModel = (activity as MainActivity).viewModel
         progressBar = view.findViewById(R.id.searchLoadingProgressBar)
         errorText = view.findViewById(R.id.searchErrorText)
+        errorText2 = view.findViewById(R.id.searchErrorText2)
         refreshRetryButton = view.findViewById(R.id.searchRefreshButtonRetry)
         nothingFoundTextView = view.findViewById(R.id.nothingFoundTextView)
 
@@ -89,6 +91,7 @@ class SearchMoviesFragment: DaggerFragment(R.layout.search_movies_fragment) {
             mAdapter.loadStateFlow.collectLatest { loadState ->
                 progressBar.isVisible = loadState.refresh is LoadState.Loading
                 errorText.isVisible = loadState.refresh is LoadState.Error
+                errorText2.isVisible = loadState.refresh is LoadState.Error
                 refreshRetryButton.isVisible = loadState.refresh is LoadState.Error
                 nothingFoundTextView.isVisible = loadState.refresh is LoadState.NotLoading && (mAdapter.itemCount == 0) && etSearch.text.toString().isNotEmpty()
             }
