@@ -32,20 +32,6 @@ class MyFileManager {
         }
     }
 
-    fun getImageFromInternalStorage(context: Context, imageFileName: String): Bitmap? {
-        val directory = context.filesDir
-        val file = File(directory, imageFileName)
-        var bitmap: Bitmap? = null
-        try {
-            bitmap = BitmapFactory.decodeStream(FileInputStream(file))
-        } catch (e: FileNotFoundException){
-            e.printStackTrace()
-        } catch (e: SecurityException){
-            e.printStackTrace()
-        }
-        return bitmap
-    }
-
     fun deleteImageFromInternalStorage(context: Context, imageFileName: String): Boolean {
         val directory = context.filesDir
         val file = File(directory, imageFileName)

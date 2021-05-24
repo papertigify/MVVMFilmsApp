@@ -18,6 +18,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
  *
  * This sample is a workaround until the Navigation Component supports multiple back stacks.
  */
+
+/**
+ * Note: it is not my class, it is a Google workaround.
+ */
+
 fun BottomNavigationView.setupWithNavController(
     navGraphIds: List<Int>,
     fragmentManager: FragmentManager,

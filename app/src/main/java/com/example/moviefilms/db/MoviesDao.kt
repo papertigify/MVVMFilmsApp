@@ -1,6 +1,5 @@
 package com.example.moviefilms.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.moviefilms.network.FilmListItem
 import kotlinx.coroutines.flow.Flow

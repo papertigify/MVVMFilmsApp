@@ -44,7 +44,6 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
     private lateinit var title: TextView
     private lateinit var saveButton: FloatingActionButton
     private lateinit var imageBackdrop: ImageView
-    private lateinit var imageAdult: ImageView
     private lateinit var ratingBar: RatingBar
     private lateinit var totalVotes: TextView
     private lateinit var buttonTrailer: Button
@@ -54,19 +53,12 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        try {
-            Class.forName("dalvik.system.CloseGuard")
-                    .getMethod("setEnabled", Boolean::class.javaPrimitiveType)
-                    .invoke(null, true)
-        } catch (e: ReflectiveOperationException) {
-            throw RuntimeException(e)
-        }
+
         viewModel = (activity as MainActivity).viewModel
 
         title = view.findViewById(R.id.detailedMovieTitle)
         saveButton = view.findViewById(R.id.saveButton)
         imageBackdrop = view.findViewById(R.id.detailedImageView)
-        imageAdult = view.findViewById(R.id.imageAdult)
         ratingBar = view.findViewById(R.id.ratingBar)
         totalVotes = view.findViewById(R.id.textTotalVotes)
         buttonTrailer = view.findViewById(R.id.buttonTrailer)
@@ -84,7 +76,6 @@ class DetailedMovieFragment: DaggerFragment(R.layout.detailed_movie_fragment) {
 
         genres.text = viewModel.getGenres(movie.genre_ids)
 
-        imageAdult.isVisible = movie.adult ?: false
 
         // checking where from this fragment opened, if from SavedMoviesFragment then load image from storage
         if (movie.backdropStoragePath != null) {

@@ -107,7 +107,7 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
 
     fun getAllSavedMovies() = repository.getAllSavedMovies()
 
-    // some other work
+    // saving images to local storage
     fun saveImagesToStorage(movie: FilmListItem) = viewModelScope.launch {
         if (movie.posterStoragePath == null && movie.backdropStoragePath == null && !isMovieInDatabase(movie.id)) {
 
@@ -129,9 +129,9 @@ class MainViewModel @Inject constructor(private val repository: MainMoviesReposi
                 movie.backdropStoragePath = backdropPath
             }
             insertMovie(movie)
-            Log.e(TAG, "Saved movie images")
+            Log.d(TAG, "Saved movie images")
         } else {
-            Log.e(TAG, "Already saved")
+            Log.d(TAG, "Already saved")
         }
     }
 

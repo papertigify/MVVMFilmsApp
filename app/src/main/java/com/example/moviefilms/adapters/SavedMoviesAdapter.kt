@@ -63,7 +63,6 @@ class SavedMoviesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private val TAG = "SavedMoviesAdapter"
         private val imgContent: ImageView = itemView.findViewById(R.id.imageSmallPoster)
-        //private val movieTitle: TextView = itemView.findViewById(R.id.movieTitle)
 
         fun bind(movie: FilmListItem){
 
@@ -77,7 +76,6 @@ class SavedMoviesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             .override(Target.SIZE_ORIGINAL))
                     .error(R.drawable.pic_placeholder)
                     .into(imgContent)
-            //movieTitle.text = movie.title
 
             itemView.setOnClickListener {
                 delegate?.openDetailedMovie(movie)

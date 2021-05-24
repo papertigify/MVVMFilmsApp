@@ -10,6 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:background="@color/black">
 
         <TextView
@@ -45,20 +47,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageAdult"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
-            android:adjustViewBounds="true"
-            android:background="@color/grey"
-            android:visibility="visible"
-            android:contentDescription="@string/image_adult"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailedMovieTitle"
-            app:srcCompat="@drawable/adult" />
-
         <RatingBar
             android:id="@+id/ratingBar"
             style="?android:attr/ratingBarStyleSmall"
@@ -87,6 +75,7 @@
             android:id="@+id/buttonTrailer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey"
             android:text="@string/watch_trailer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,8 +85,8 @@
             android:id="@+id/textGenres"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"

@@ -48,7 +48,6 @@ class AllMoviesFragment: DaggerFragment(R.layout.all_movies_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
-        Log.e(TAG, "AllMoviesFragment 1")
         progressBar = view.findViewById(R.id.loadingProgressBar)
         errorText = view.findViewById(R.id.errorText)
         errorText2 = view.findViewById(R.id.errorText2)
